@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http'
 import { Component, OnInit } from '@angular/core';
-//import { NgFor } from '@angular/common'; 
-
 import { CommonModule } from '@angular/common';
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NavComponent } from './nav/nav.component';
+import { FormsModule } from '@angular/forms';
+
 
 
 @Component({
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  imports: [ CommonModule],
+  imports: [ CommonModule, NavComponent, FormsModule]
 })
 
 export class AppComponent implements OnInit {  
