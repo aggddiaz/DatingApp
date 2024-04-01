@@ -16,6 +16,7 @@ import { SharedModule } from '../_modules/shared.module';
 })
 export class NavComponent implements OnInit { 
   model: any = {}; 
+  router: any;
   constructor(public accountService: AccountService, private toastr: ToastrService) {}
   ngOnInit(): void {   
   } 
@@ -23,14 +24,7 @@ export class NavComponent implements OnInit {
  
   login() {
     this.accountService.login(this.model).subscribe({
-      next: response =>
-      {
-        console.log(response);        
-      },
-      error: error => {
-        this.toastr.error(error.error);
-        console.log(error);
-      }
+      next: _ =>this.router.navigateByUrl('/members')
     })
   }
  
