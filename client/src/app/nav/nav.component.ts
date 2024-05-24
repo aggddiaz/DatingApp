@@ -2,9 +2,10 @@ import { Component,OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { CommonModule, NgIf, JsonPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SharedModule } from '../_modules/shared.module';
+
 
  
 @Component({
@@ -12,12 +13,12 @@ import { SharedModule } from '../_modules/shared.module';
   standalone: true,
   imports: [FormsModule, CommonModule, NgIf, JsonPipe, RouterLink, SharedModule],
   templateUrl: './nav.component.html',
-  styleUrl: './nav.component.sass'
+  styleUrl: './nav.component.css'
 })
 export class NavComponent implements OnInit { 
   model: any = {}; 
-  router: any;
-  constructor(public accountService: AccountService, private toastr: ToastrService) {}
+  //router: any;
+  constructor(public accountService: AccountService, private toastr: ToastrService, private router: Router) {}
   ngOnInit(): void {   
   } 
   
