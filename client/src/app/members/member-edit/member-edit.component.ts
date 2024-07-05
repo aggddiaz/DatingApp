@@ -10,11 +10,12 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { PhotoEditorComponent } from '../photo-editor/photo-editor.component';
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [CommonModule, NgIf, TabsModule, NgxGalleryModule, FormsModule],
+  imports: [CommonModule, NgIf, TabsModule, NgxGalleryModule, FormsModule, PhotoEditorComponent],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.css'
 })

@@ -8,7 +8,6 @@ import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './_modules/shared.module';
 
-;
 
  
 @Component({
@@ -37,7 +36,7 @@ export class AppComponent implements OnInit {
     const userString = localStorage.getItem('user');
     if (!userString) return;
     const user: User = JSON.parse(userString);
-    this.accountService.setCurrentuser(user);
+    this.accountService.setCurrentUser(user);
     }
   }
 }

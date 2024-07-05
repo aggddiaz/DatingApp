@@ -1,0 +1,14 @@
+<div class="mb-3">
+    <input type={{type}}
+        class="form-control"
+        [class.is-invalid] = "control.touched && control.invalid"
+        [formControl]="control"
+        placeholder={{label}}
+    >
+    <div class="invalid-feedbach" *ngIf="control.errors?.['required']">Please enter a {{label}}</div>
+    <div class="invalid-feedbach" *ngIf="control.errors?.['minlenght']">">{{label}} must be at least {{control.errors?.['minlength']}} characters</div>
+    <div class="invalid-feedbach" *ngIf="control.errors?.['maxlenght']">">{{label}} must be at most {{control.errors?.['maxlenght']}} characters</div>
+    <div class="invalid-feedbach" *ngIf="control.errors?.['notMatching']">Password do not match</div>
+</div>
+ 
+
