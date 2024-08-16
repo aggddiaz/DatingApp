@@ -10,17 +10,10 @@ using Microsoft.EntityFrameworkCore;
  
 namespace API.Controllers
 {
-    public class AccountController : BaseApiController
+    public class AccountController (DataContext context, ITokenService tokenService,
+        IMapper mapper) : BaseApiController
     {
-        private readonly DataContext _context;
-        private readonly ITokenService _tokenService;
-        private readonly IMapper _mapper;
-        public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
-        {
-            _tokenService = tokenService;
-            _context = context;
-            _mapper = mapper;
-        }
+        
    
  
         [HttpPost("register")]  //POST: api/account/register
@@ -29,31 +22,32 @@ namespace API.Controllers
  
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
  
-            var user = _mapper.Map<AppUser>(registerDto);
- 
             using var hmac = new HMACSHA512();
+
+            var user = mapper.Map<AppUser>(registerDto);            
            
             user.UserName = registerDto.UserName.ToLower();
             user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
             user.PasswordSalt = hmac.Key;
                    
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            context.Users.Add(user);
+            await context.SaveChangesAsync();
  
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user),
-                KnownAs = user.KnownAs
+                Token = tokenService.CreateToken(user),
+                KnownAs = user.KnownAs,
+                Gender = user.Gender,
             };
         }
  
         [HttpPost("login")]
        public async Task<ActionResult<UserDto>>Login (LoginDto loginDto)
        {
-            var user = await _context.Users
+            var user = await context.Users
                 .Include(p => p.Photos)
-                .SingleOrDefaultAsync(x=>x.UserName == loginDto.UserName.ToLower());
+                .FirstOrDefaultAsync(x=>x.UserName == loginDto.UserName.ToLower());
  
             if (user == null) return Unauthorized("Invalid username");
            
@@ -70,16 +64,18 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x =>x.IsMain)?.Url,
-                KnownAs = user.KnownAs
+                KnownAs = user.KnownAs,
+                Token = tokenService.CreateToken(user),
+                Gender = user.Gender,
+                PhotoUrl = user.Photos.FirstOrDefault(x =>x.IsMain)?.Url,                
+                
             };
            
        }
  
         private async Task<bool> UserExists(string username)
        {
-         return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+         return await context.Users.AnyAsync(x => x.UserName == username.ToLower());
        }
     }
 }

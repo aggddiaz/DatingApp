@@ -41,7 +41,7 @@ export class PhotoEditorComponent implements OnInit {
   }
  
   setMainPhoto(photo: Photo){
-    this.memberService.setMainPhoto(photo.id).subscribe({
+    this.memberService.setMainPhoto(photo).subscribe({
       next: () =>{
         if (this.user && this.member){
           this.user.photoUrl = photo.url;
@@ -56,11 +56,11 @@ export class PhotoEditorComponent implements OnInit {
     })
   }
  
-  deletePhoto(photoId: number){
-    this.memberService.deletePhoto(photoId).subscribe({
+  deletePhoto(photo: Photo){
+    this.memberService.deletePhoto(photo).subscribe({
       next: _ => {
         if (this.member){
-          this.member.photos = this.member.photos.filter(x => x.id != photoId);          
+          this.member.photos = this.member.photos.filter(x => x.id != photo.id);          
         }
       }
     })
@@ -86,13 +86,14 @@ export class PhotoEditorComponent implements OnInit {
         const photo = JSON.parse(response);
         this.member?.photos.push(photo);
         if(photo.isMain && this.user && this.member)
-          {
-            this.user.photoUrl = photo.url;
-            this.member.photoUrl = photo.url;
-            this.accountService.setCurrentUser(this.user);
-          }
+        {
+          this.user.photoUrl = photo.url;
+          this.member.photoUrl = photo.url;
+          this.accountService.setCurrentUser(this.user);
+        }          
       }
     }
   }
  
 }
+ 
